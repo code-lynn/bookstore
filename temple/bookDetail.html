@@ -1,0 +1,43 @@
+<div class="panel panel-success col-md-12">
+    <div class="panel-heading">{{book.bookName}}</div>
+    <div class="panel-body text-center">
+        <img ng-src="{{book.bookCover}}" alt="">
+    </div>
+    <div class="panel-footer">
+        价格 {{book.bookPrice | currency:'$'}}
+        <a class="btn btn-warning" ng-show="flag" ng-click="flag=false">修改</a>
+        <a class="btn btn-danger" ng-show="flag" ng-click="remove(book.id)">删除</a>
+    </div>
+</div>
+
+<style>
+    img{width: 220px;height:220px;background: red}
+</style>
+<!--修改-->
+
+<form action="" class="form-horizontal" ng-hide="flag">
+    <div class="form-group">
+        <label for="bookName" class="col-md-2 control-label">书的名称</label>
+        <div class="col-md-10">
+            <input type="text" id="bookName" class="form-control" placeholder="请输入书的名称" ng-model="newBook.bookName">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="bookCover" class="col-md-2 control-label">书的封面</label>
+        <div class="col-md-10">
+            <input type="text" id="bookCover" class="form-control" placeholder="请输入书的封面" ng-model="newBook.bookCover">
+        </div>
+    </div><div class="form-group">
+    <label for="bookPrice" class="col-md-2 control-label">书的价格</label>
+    <div class="col-md-10">
+        <input type="text" id="bookPrice" class="form-control" placeholder="请输入书的价格" ng-model="newBook.bookPrice">
+    </div>
+</div>
+    <!--按钮-->
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <button class="btn btn-warning btn-lg" ng-click="cancelBook()">取消修改</button>
+            <button class="btn btn-warning btn-lg" ng-click="updateBook()">修改图书</button>
+        </div>
+    </div>
+</form>

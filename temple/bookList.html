@@ -1,0 +1,31 @@
+<!--若没有样式提示  记得最后要删掉-->
+<!--<link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.css">-->
+
+<!--<div class="panel panel-success col-md-4" >
+    &lt;!&ndash;col-md-4 列col-md-offset-1 间距&ndash;&gt;
+    <div class="panel-heading">angular权威教程</div>
+    <div class="panel-body text-center">
+        <img src="http://img3x5.ddimg.cn/4/13/23541115-1_w_1.jpg" alt="">
+    </div>
+    <div class="panel-footer">
+        价格 400 <a class="btn btn-default">跳转详情</a>
+    </div>
+</div>-->
+
+
+<div class="panel panel-success col-md-4" ng-repeat="book in lists track by $index">
+    <!--col-md-4 列col-md-offset-1 间距-->
+    <div class="panel-heading">{{book.bookName}}</div>
+    <div class="panel-body text-center">
+        <!--???-->
+        <img ng-src="{{book.bookCover}}" alt="">
+    </div>
+    <div class="panel-footer">
+        价格 {{book.bookPrice | currency:'$'}}
+        <a class="btn btn-default" href="#/bookDetail/{{book.id}}">跳转详情</a>
+    </div>
+</div>
+
+<style>
+    img{width: 220px;height:220px;background: red}
+</style>

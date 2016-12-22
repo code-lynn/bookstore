@@ -1,0 +1,26 @@
+
+<form action="" class="form-horizontal">
+    <div class="form-group">
+        <label for="bookName" class="col-md-2 control-label">书的名称</label>
+        <div class="col-md-10">
+            <input type="text" id="bookName" class="form-control" placeholder="请输入书的名称" ng-model="book.bookName">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="bookCover" class="col-md-2 control-label">书的封面</label>
+        <div class="col-md-10">
+            <input type="text" id="bookCover" class="form-control" placeholder="请输入书的封面" ng-model="book.bookCover">
+        </div>
+    </div><div class="form-group">
+    <label for="bookPrice" class="col-md-2 control-label">书的价格</label>
+    <div class="col-md-10">
+        <input type="text" id="bookPrice" class="form-control" placeholder="请输入书的价格" ng-model="book.bookPrice">
+    </div>
+</div>
+    <!--按钮-->
+<div class="form-group">
+    <div class="col-md-offset-2 col-md-1">
+        <button class="btn btn-success btn-lg" ng-click="saveBook()">增加图书</button>
+    </div>
+</div>
+</form>

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="appModule">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.css">
+</head>
+<body>
+<div class="navbar navbar-inverse">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <a href="#/" class="navbar-brand">珠峰商店</a>
+            <!-- #/ 不跳转页面 在本页面？？？-->
+        </div>
+        <div>
+            <ul class="nav navbar-nav">
+                <li><a href="#/">首页</a></li>
+                <li><a href="#/bookList">列表页</a></li>
+                <li><a href="#/bookAdd">增加图书</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+<!--ng-view与template相对应，将模板中内容插入到ng-view的标签中-->
+<!--通过HASH(锚点)实现路径的更改调用不同的逻辑，不会刷新页面，而且会产生历史管理-->
+<!--<ng-view></ng-view>-->
+<div ng-view="" class="container"></div>
+<!---->
+<script src="node_modules/angular/angular.js"></script>
+<script src="node_modules/angular-resource/angular-resource.js"></script>
+<script src="node_modules/angular-route/angular-route.js"></script>
+<script>
+    var app=angular.module('appModule',['ngResource','ngRoute']);//先写路由--
+    // 'ngResource'用在服务中提供不同接口的不同请求方法，'ngRoute'--app.config配置路由使用$routeProvider
+    app.factory('$book',function ($resource) {//$resource？？？？
+        return $resource('/books/:id',null,{ //服务接口/books/:id 中的 :占位符
+            update:{method:'PUT'}
+        })
+    });
+
+    /*路由中的服务是配置使用，不是调用*/
+    app.config(function ($routeProvider) {
+        $routeProvider.when('/',{
+            templateUrl:'temple/index.html',
+            controller:'indexCtrl'
+        }).when('/bookAdd',{
+            templateUrl:'temple/bookAdd.html',
+            controller:'addCtrl'
+        }).when('/bookList',{
+            templateUrl:'temple/bookList.html',
+            controller:'listCtrl'
+        }).when('/bookDetail/:bookId',{
+            //:bookId占位符,$routeParams模糊匹配,/bookDetail/2 -->$routeParams:{bookId:2}
+            templateUrl:'temple/bookDetail.html',
+            controller:'detailCtrl'
+        }).otherwise('/');//其他条件不识别的都为/
+    });
+    /*前后端分离：服务器只通过url提供页面和数据，并没有提供跳转，跳转是通过前端的路由实现的-HASH值
+    * 前端实现跳转页面后，由前端的路由默认发送的请求，后台根据url返回相应的页面或数据*/
+    app.controller('indexCtrl',['$scope',function ($scope) {
+        $scope.name='珠峰书店';
+    }]);
+    app.controller('addCtrl',['$scope','$book','$location',function ($scope,$book,$location) {
+        /*保存数据*/
+        $scope.saveBook=function () { //模块ngRoute中的$location的服务相当于window.location.href
+            $book.save($scope.book).$promise.then(function (data) {
+                $location.path('/bookList');//重定向？？？
+            });
+            //保存完成，跳转页面
+        }
+    }]);
+    app.controller('listCtrl',['$scope','$book',function ($scope,$book) {
+        //将数据获取到渲染到页面
+        $scope.lists=$book.query();
+//        console.log($scope.lists);
+        /*$book.query().$promise.then(function (data) {
+            //data就是后台返回的数据
+            $scope.lists=data;
+        })*/
+    }]);
+    app.controller('detailCtrl',['$scope','$routeParams','$book','$location',function ($scope,$routeParams,$book,$location) {
+        var bookId=$routeParams.bookId;
+        $book.get({id:bookId}).$promise.then(function (data) {
+            //防止上下联动
+            $scope.newBook=JSON.parse(JSON.stringify(data));
+            $scope.book=data;
+        });//通过id去后台查询对应的那一条数据 --get
+        //删除
+        $scope.remove=function (id) {
+            //key value相同可以简写成一个 {id:id}
+            $book.delete({id}).$promise.then(function () { //{id}??????
+                $location.path('/bookList');
+            });
+        };
+        /**/
+        $scope.flag=true;
+
+        $scope.cancelBook = function () {
+                $scope.flag = true;//可能点击取消之前有改动在将最后的值重新绑定一下
+            $scope.newBook = JSON.parse(JSON.stringify($scope.book));
+        };
+
+        $scope.updateBook=function () {
+            $book.update({id:bookId},$scope.newBook).$promise.then(function (data) {
+                //get(id) save(项) delete(id) update(id,项)的传参？？？
+                $scope.flag=true;
+                $scope.book=data;
+            })
+        }
+    }])
+</script>
+</body>
+</html>
