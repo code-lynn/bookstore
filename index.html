@@ -26,9 +26,13 @@
 <!--<ng-view></ng-view>-->
 <div ng-view="" class="container"></div>
 <!---->
-<script src="node_modules/angular/angular.js"></script>
+<!-- <script src="node_modules/angular/angular.js"></script>
 <script src="node_modules/angular-resource/angular-resource.js"></script>
-<script src="node_modules/angular-route/angular-route.js"></script>
+<script src="node_modules/angular-route/angular-route.js"></script> -->
+<script src="//cdn.bootcss.com/angular.js/1.5.9/angular.js"></script>
+<script src="//cdn.bootcss.com/angular.js/1.5.9/angular-route.js"></script>
+<script src="//cdn.bootcss.com/angular.js/1.5.9/angular-resource.js"></script>
+    
 <script>
     var app=angular.module('appModule',['ngResource','ngRoute']);//先写路由--
     // 'ngResource'用在服务中提供不同接口的不同请求方法，'ngRoute'--app.config配置路由使用$routeProvider
